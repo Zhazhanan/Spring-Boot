@@ -5,5 +5,5 @@ server:
 spring:
   data:
     elasticsearch:
-      cluster-name: HUHA-ES
-      cluster-nodes: 127.0.0.1:9300
+      cluster-name: huha-cluster
+      cluster-nodes: 127.0.0.1:9300,127.0.0.1:9301

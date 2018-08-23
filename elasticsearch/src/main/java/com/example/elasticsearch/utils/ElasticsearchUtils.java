@@ -14,6 +14,7 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.action.update.UpdateRequest;
+import org.elasticsearch.client.Requests;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.unit.Fuzziness;
@@ -27,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,19 +48,20 @@ public class ElasticsearchUtils {
     private TransportClient transportClient;
 
     /**
-     * save
+     * index save
      */
     public boolean createIndex(String index) {
         if (!isIndexExist(index)) {
             LOGGER.warn("Index is not exits!");
         }
+        Assert.notNull(index, "No index defined for Query");
         CreateIndexResponse indexresponse = transportClient.admin().indices().prepareCreate(index).execute().actionGet();
         LOGGER.info("执行建立成功？" + indexresponse.isAcknowledged());
         return indexresponse.isAcknowledged();
     }
 
     /**
-     * delete
+     * index delete
      */
     public boolean deleteIndex(String index) {
         if (!isIndexExist(index)) {
@@ -74,7 +77,7 @@ public class ElasticsearchUtils {
     }
 
     /**
-     * 判断索引是否存在
+     * index judge
      */
     public boolean isIndexExist(String index) {
         IndicesExistsResponse inExistsResponse = transportClient.admin().indices().exists(new IndicesExistsRequest(index)).actionGet();
@@ -85,13 +88,7 @@ public class ElasticsearchUtils {
     }
 
     /**
-     * 数据添加，正定ID
-     *
-     * @param jsonObject 要增加的数据
-     * @param index      索引，类似数据库
-     * @param type       类型，类似表
-     * @param id         数据ID
-     * @return
+     * data save
      */
     public String addData(JSONObject jsonObject, String index, String type, String id) {
         IndexResponse response = transportClient.prepareIndex(index, type, id).setSource(jsonObject).get();
@@ -100,23 +97,14 @@ public class ElasticsearchUtils {
     }
 
     /**
-     * 数据添加
-     *
-     * @param jsonObject 要增加的数据
-     * @param index      索引，类似数据库
-     * @param type       类型，类似表
-     * @return
+     * data save
      */
     public String addData(JSONObject jsonObject, String index, String type) {
         return addData(jsonObject, index, type, UUID.randomUUID().toString().replaceAll("-", "").toUpperCase());
     }
 
     /**
-     * 通过ID删除数据
-     *
-     * @param index 索引，类似数据库
-     * @param type  类型，类似表
-     * @param id    数据ID
+     * data delete
      */
     public void deleteDataById(String index, String type, String id) {
         DeleteResponse response = transportClient.prepareDelete(index, type, id).execute().actionGet();
@@ -124,13 +112,7 @@ public class ElasticsearchUtils {
     }
 
     /**
-     * 通过ID 更新数据
-     *
-     * @param jsonObject 要增加的数据
-     * @param index      索引，类似数据库
-     * @param type       类型，类似表
-     * @param id         数据ID
-     * @return
+     * data update
      */
     public void updateDataById(JSONObject jsonObject, String index, String type, String id) {
         UpdateRequest updateRequest = new UpdateRequest();
@@ -140,13 +122,7 @@ public class ElasticsearchUtils {
     }
 
     /**
-     * 通过ID获取数据
-     *
-     * @param index  索引，类似数据库
-     * @param type   类型，类似表
-     * @param id     数据ID
-     * @param fields 需要显示的字段，逗号分隔（缺省为全部字段）
-     * @return
+     * data get
      */
     public Map<String, Object> searchDataById(String index, String type, String id, String fields) {
         GetRequestBuilder getRequestBuilder = transportClient.prepareGet(index, type, id);
