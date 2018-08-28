@@ -9,3 +9,5 @@ spring:
     hibernate:
       ddl-auto: update
     database: mysql
+server:
+  port: 8888
