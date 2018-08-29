@@ -1,0 +1,16 @@
+server:
+  port: 8087
+  servlet:
+    context-path: /ST
+logging:
+  level:
+    org.springframework: info
+    com.example: debug
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cboard?useUnicode=true&characterEncoding=utf-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&zeroDateTimeBehavior=convertToNull
+    username: root
+    password: root
+
+
