@@ -1,0 +1,9 @@
+server:
+  port: 8888
+apache:
+  rocketmq:
+    consumer:
+      PushConsumer: PushConsumer
+    producer:
+      producerGroup: Producer
+    namesrvAddr: localhost:9876
