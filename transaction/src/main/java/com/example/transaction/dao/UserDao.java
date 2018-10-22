@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Update;
 
 public interface UserDao {
-    @Insert("INSERT INTO user(ID,NAME,PASSWORD) values(#{id},#{name},#{password})")
+    @Insert("INSERT INTO user(ID,NAME,PASSWORD,CREATETIME) values(#{id},#{name},#{password},#{createTime})")
     int insert(User user);
 
     @Update("UPDATE user SET NAME=#{name},PASSWORD=#{password} WHERE ID =#{id}")

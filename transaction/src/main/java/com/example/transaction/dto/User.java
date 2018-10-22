@@ -1,6 +1,7 @@
 package com.example.transaction.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author WangKun
@@ -11,6 +12,7 @@ public class User implements Serializable {
     private String id;
     private String name;
     private String password;
+    private Date createTime;
 
     public String getId() {
         return id;
@@ -34,5 +36,13 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }
