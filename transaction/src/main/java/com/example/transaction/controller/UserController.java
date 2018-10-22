@@ -48,7 +48,8 @@ public class UserController {
 
     @GetMapping(value = "/findAll")
     public List<User> findAll() throws Exception {
-        return service.findAll();
+        List<User> all = service.findAll();
+        return all;
     }
 
 
