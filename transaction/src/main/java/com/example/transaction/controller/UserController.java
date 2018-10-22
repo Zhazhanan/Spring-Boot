@@ -6,9 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +32,16 @@ public class UserController {
             logger.error("insert：", e);
         }
         return;
+    }
+
+    @PostMapping(value = "/save")
+    public void save(User user) throws Exception {
+        service.save(user);
+    }
+
+    @PostMapping(value = "/updateUser")
+    public void updateUser(User user) throws Exception {
+        service.updateUser(user);
     }
 
 

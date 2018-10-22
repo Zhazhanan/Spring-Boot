@@ -31,13 +31,21 @@ public class UserService implements Serializable {
         return insert;
     }
 
+    public void save(User user) {
+        dao.save(user);
+    }
+
+    public void updateUser(User user) {
+        dao.updateUser(user);
+    }
+
     //    @Transactional(propagation = Propagation.REQUIRED)
     public void update(User user) {
 //        try {
-            dao.update(user);
-            if (true) {
-                throw new RuntimeException("it is error");
-            }
+        dao.update(user);
+        if (true) {
+            throw new RuntimeException("it is error");
+        }
 //        } catch (RuntimeException e) {
 //            LOGGER.error("update::user = {}，e = {}", user, e);
 //            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
