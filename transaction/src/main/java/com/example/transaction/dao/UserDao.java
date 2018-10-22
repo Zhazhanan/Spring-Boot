@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 @Mapper
 public interface UserDao {
     @Insert("INSERT INTO user(ID,NAME,PASSWORD,CREATETIME) values(#{id},#{name},#{password},#{createTime})")
@@ -19,4 +21,6 @@ public interface UserDao {
 
     void save(User user);
     void updateUser(User user);
+
+    List<User> findAll();
 }

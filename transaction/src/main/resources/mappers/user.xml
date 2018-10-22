@@ -9,6 +9,10 @@
         <result property="createTime" column="createTime" jdbcType="DATE" />
     </resultMap>
 
+
+    <select id="findAll" resultMap="userMap" parameterType="Object">
+        SELECT * FROM codetest.user;
+    </select>
     <insert id="save" parameterType="Object" useGeneratedKeys="true">
         INSERT INTO codetest.user (id, name, password, createTime)
         VALUES (#{id}, #{name}, #{password}, #{createTime});

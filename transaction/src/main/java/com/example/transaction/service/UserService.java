@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @classname: LaTAdvfinishedService
@@ -37,6 +38,10 @@ public class UserService implements Serializable {
 
     public void updateUser(User user) {
         dao.updateUser(user);
+    }
+
+    public List<User> findAll() {
+        return dao.findAll();
     }
 
     //    @Transactional(propagation = Propagation.REQUIRED)

@@ -6,10 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @classname: LaTAdvfinishedController
@@ -42,6 +44,11 @@ public class UserController {
     @PostMapping(value = "/updateUser")
     public void updateUser(User user) throws Exception {
         service.updateUser(user);
+    }
+
+    @GetMapping(value = "/findAll")
+    public List<User> findAll() throws Exception {
+        return service.findAll();
     }
 
 
