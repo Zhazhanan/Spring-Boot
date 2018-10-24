@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.swaggerbootstrapuidemo.autoConfig.dto">
+    <resultMap id="SysConfigDTO" type="com.example.swaggerbootstrapuidemo.autoConfig.dto.SysConfigDTO">
+        <result property="id" column="ID" jdbcType="DECIMAL"/>
+        <result property="configName" column="CONFIG_NAME" jdbcType="VARCHAR"/>
+        <result property="createDate" column="CREATE_DATE" jdbcType="DATE"/>
+    </resultMap>
+
+
+    <select id="searchSysConfig" parameterType="java.util.Map" resultMap="SysConfigDTO">
+        select
+        t1.id ,
+        t1.config_name ,
+        t1.config_code ,
+        t1.config_value ,
+        t1.config_type ,
+        t1.validate_state ,
+        t1.version
+        from sys_config t1
+        where t1.validate_state='1'
+        <if test="dto.id != null and dto.id != ''">
+            and t1.ID = #{dto.id}
+        </if>
+        <if test="dto.configName != null and dto.configName != ''">
+            and t1.CONFIG_NAME = #{dto.configName}
+        </if>
+        <if test="dto.configCode != null and dto.configCode != ''">
+            and t1.CONFIG_CODE = #{dto.configCode}
+        </if>
+        <if test="dto.configValue != null and dto.configValue != ''">
+            and t1.CONFIG_VALUE = #{dto.configValue}
+        </if>
+        <if test="dto.configType != null and dto.configType != ''">
+            and t1.CONFIG_TYPE = #{dto.configType}
+        </if>
+        <if test="dto.version != null and dto.version != ''">
+            and t1.VERSION = #{dto.version}
+        </if>
+    </select>
+
+    <select id="searchSysConfigByPaging" parameterType="java.util.Map" resultMap="SysConfigDTO">
+        select
+        t1.id ,
+        t1.config_name ,
+        t1.config_code ,
+        t1.config_value ,
+        t1.config_type ,
+        t1.validate_state ,
+        t1.version
+        from sys_config t1
+        where t1.validate_state='1'
+        <if test="dto.id != null and dto.id != ''">
+            and t1.ID = #{dto.id}
+        </if>
+        <if test="dto.configName != null and dto.configName != ''">
+            and t1.CONFIG_NAME = #{dto.configName}
+        </if>
+        <if test="dto.configCode != null and dto.configCode != ''">
+            and t1.CONFIG_CODE = #{dto.configCode}
+        </if>
+        <if test="dto.configValue != null and dto.configValue != ''">
+            and t1.CONFIG_VALUE = #{dto.configValue}
+        </if>
+        <if test="dto.configType != null and dto.configType != ''">
+            and t1.CONFIG_TYPE = #{dto.configType}
+        </if>
+        <if test="dto.version != null and dto.version != ''">
+            and t1.VERSION = #{dto.version}
+        </if>
+    </select>
+
+    <select id="findSysConfigByPrimaryKey" parameterType="java.util.Map" resultMap="SysConfigDTO">
+	select 
+		t1.id                             ,
+		t1.config_name                    ,
+		t1.config_code                    ,
+		t1.config_value                   ,
+		t1.config_type                    ,
+		t1.validate_state                 ,
+		t1.version                        
+	from sys_config 		t1
+	where 
+		t1.id = #{id} and t1.validate_state='1'
+</select>
+
+    <insert id="insertSysConfig" parameterType="java.util.Map" useGeneratedKeys="true">
+        insert into sys_config
+        (
+        config_name ,
+        version
+        )
+        values(#{dto.configName,jdbcType=VARCHAR}
+        ,#{dto.createDate,jdbcType=DATE}
+        )
+    </insert>
+
+    <update id="updateSysConfig" parameterType="java.util.Map">
+	update sys_config t1
+		set 
+			t1.config_name                    =#{dto.configName,jdbcType=VARCHAR},
+			t1.config_code                    =#{dto.configCode,jdbcType=VARCHAR},
+			t1.config_value                   =#{dto.configValue,jdbcType=VARCHAR},
+			t1.config_type                    =#{dto.configType,jdbcType=VARCHAR},
+			t1.validate_state                 ='1',
+			t1.version                        =#{dto.version,jdbcType=DECIMAL}
+		where t1.id = #{dto.id}
+</update>
+
+    <update id="deleteSysConfigByPrimaryKey" parameterType="java.util.Map">
+	update sys_config t1
+	set  t1.validate_state='0'	
+	where t1.id in( ${ids})
+</update>
+
+    <select id="queryValueByCode" parameterType="java.lang.String" resultType="java.util.Map">
+	select 
+		t1.config_value VALUE
+	from sys_config 		t1
+	where  t1.validate_state='1' 
+	  and  t1.config_code = #{code}
+</select>
+</mapper>
