@@ -6,7 +6,11 @@
 **1.创建springboot项目，并在pom.xml文件引入依赖  
 2.修改配置文件application.yml  
 3.码示例代码  
-4.启动演示示例，访问原生页面地址 http://localhost:‘port’/swagger-ui.html,扩展地址http://localhost:‘port’/doc.html**
+4.启动演示示例，  
+访问原生页面地址  
+http://localhost:‘port’/swagger-ui.html,   
+扩展地址  
+http://localhost:‘port’/doc.html**
 ## 问题
 **实际业务问题：  
   1.接口升级  
