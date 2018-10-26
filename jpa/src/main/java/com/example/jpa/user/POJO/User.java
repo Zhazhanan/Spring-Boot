@@ -1,9 +1,11 @@
 package com.example.jpa.user.POJO;
 
 import lombok.Data;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author WangKun
@@ -20,4 +22,6 @@ public class User implements Serializable {
     @Column(unique = true,nullable = false)
     private String name;
     private Integer password;
+    @CreatedDate
+    private Date createDate;
 }
