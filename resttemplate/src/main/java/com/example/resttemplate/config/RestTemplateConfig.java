@@ -84,14 +84,14 @@ public class RestTemplateConfig {
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory = new HttpComponentsClientHttpRequestFactory(httpClient());
 
         //连接超时
-        clientHttpRequestFactory.setConnectTimeout(connectTimeout);
-        LOGGER.info("配置restTemplate-connectTimeout: {}", connectTimeout);
+        if (connectTimeout > 0)
+            clientHttpRequestFactory.setConnectTimeout(connectTimeout);
         //数据读取超时时间
-        clientHttpRequestFactory.setReadTimeout(readTimeout);
-        LOGGER.info("配置restTemplate-readTimeout: {}", readTimeout);
+        if (readTimeout > 0)
+            clientHttpRequestFactory.setReadTimeout(readTimeout);
         //连接不够用的等待时间
-        clientHttpRequestFactory.setConnectionRequestTimeout(connectionRequestTimeout);
-        LOGGER.info("配置restTemplate-connectionRequestTimeout: {}", connectionRequestTimeout);
+        if (connectionRequestTimeout > 0)
+            clientHttpRequestFactory.setConnectionRequestTimeout(connectionRequestTimeout);
 
         return clientHttpRequestFactory;
     }
