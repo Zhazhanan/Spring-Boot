@@ -1,9 +1,11 @@
 server:
-  port: 8888
+  port: 80
+  servlet:
+    context-path: /mq
 apache:
   rocketmq:
     consumer:
       PushConsumer: PushConsumer
     producer:
       producerGroup: Producer
-    namesrvAddr: localhost:9876
+    namesrvAddr: 172.18.100.139:9876;172.18.100.169:9876
