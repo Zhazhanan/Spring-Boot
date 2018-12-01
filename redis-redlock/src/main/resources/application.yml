@@ -1,0 +1,17 @@
+server:
+  port: 8088
+spring:
+  redis:
+#    database: 0
+#    host: 39.105.186.116
+#    port: 6379
+#    password: ""
+#    ssl: false
+#    timeout: 1000ms
+  #    cluster:
+  #      nodes:
+  #    sentinel:
+  #      master:
+  #      nodes:
+    redisson:
+      config: classpath:redisson.yaml
