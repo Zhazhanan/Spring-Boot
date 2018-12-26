@@ -1,0 +1,3 @@
+cboard:
+  db:
+    schema-update: true
