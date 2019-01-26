@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mybatisdemo.demo.mapper.DemoDAO">
+    <resultMap id="DemoDTO" type="com.example.mybatisdemo.demo.domain.DemoDTO">
+        <result property="id" column="ID" jdbcType="BIGINT"/>
+        <result property="name" column="NAME" jdbcType="VARCHAR"/>
+        <result property="age" column="AGE" jdbcType="SMALLINT"/>
+        <result property="sex" column="SEX" jdbcType="BIT"/>
+        <result property="birthday" column="BIRTHDAY" jdbcType="DATE"/>
+        <result property="address" column="ADDRESS" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="valid" column="VALID" jdbcType="BIT"/>
+    </resultMap>
+
+    <sql id="BasicColumn">
+        t1.id,
+        t1.name,
+        t1.age,
+        t1.sex,
+        t1.birthday,
+        t1.address,
+        t1.create_time,
+        t1.valid
+    </sql>
+
+    <sql id="BasicWhere">
+        <trim prefix="WHERE" prefixOverrides="AND |OR ">
+            <if test="id != null and id != ''">
+                and t1.ID =#{id}
+            </if>
+            <if test="name != null and name != ''">
+                and t1.NAME =#{name}
+            </if>
+            <if test="age != null and age != ''">
+                and t1.AGE =#{age}
+            </if>
+            <if test="sex != null and sex != ''">
+                and t1.SEX =#{sex}
+            </if>
+            <if test="birthday != null and birthday != ''">
+                and t1.BIRTHDAY =#{birthday}
+            </if>
+            <if test="address != null and address != ''">
+                and t1.ADDRESS =#{address}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and t1.CREATE_TIME =#{createTime}
+            </if>
+            <if test="valid != null and valid != ''">
+                and t1.VALID =#{valid}
+            </if>
+        </trim>
+    </sql>
+
+    <select id="searchDemoByPaging" parameterType="Object" resultMap="DemoDTO">
+        select
+        <include refid="BasicColumn"/>
+        from demo t1
+        <include refid="BasicWhere"/>
+    </select>
+
+    <select id="findDemoByPrimaryKey" parameterType="java.lang.String" resultMap="DemoDTO">
+        select
+        <include refid="BasicColumn"/>
+        from demo t1
+    </select>
+
+</mapper>
