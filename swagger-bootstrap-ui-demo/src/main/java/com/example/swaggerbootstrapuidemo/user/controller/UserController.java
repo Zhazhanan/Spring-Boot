@@ -1,7 +1,5 @@
 package com.example.swaggerbootstrapuidemo.user.controller;
 
-import com.example.swaggerbootstrapuidemo.autoConfig.dto.SysConfigDTO;
-import com.example.swaggerbootstrapuidemo.autoConfig.service.SysConfigService;
 import com.example.swaggerbootstrapuidemo.user.entity.User;
 import com.example.swaggerbootstrapuidemo.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -22,8 +20,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private SysConfigService sysConfigService;
 
     @PostMapping(value = "/add")
     @ApiOperation(value = "新增", notes = "新增描述")
@@ -62,29 +58,8 @@ public class UserController {
             @ApiResponse(code = 200, message = "查询成功"),
             @ApiResponse(code = 404, message = "查询失败")
     })
-//    public Page<User> getUser() {
-//    public Page<User> getUser(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
-//        return userService.getList(pageable);
-//    }
     public List<User> getUser() {
         return userService.getList();
-    }
-
-
-    @RequestMapping(value = "/create/v1", method = RequestMethod.POST)
-    public void create(@RequestBody SysConfigDTO sysConfigDTO) throws Exception {
-        sysConfigService.insertSysConfig(sysConfigDTO);
-    }
-
-    /**
-     * 修改一个业务对象
-     *
-     * @param sysConfigDTO
-     * @return
-     */
-    @ApiOperation(nickname = "create", value = "create SysConfigDTO", notes = "sysConfigDTO")
-    public void update(@RequestBody SysConfigDTO sysConfigDTO) throws Exception {
-        sysConfigService.updateSysConfig(sysConfigDTO);
     }
 
 }
