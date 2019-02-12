@@ -14,6 +14,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class SwaggerConfig {
     public Docket open_api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .enable(enableSwagger)
+                // 将Timestamp类型全部转为Long类型
+                .directModelSubstitute(Timestamp.class, Long.class)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/users/**"))
@@ -46,6 +49,7 @@ public class SwaggerConfig {
     public Docket iner_api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .enable(enableSwagger)
+                .directModelSubstitute(Timestamp.class, Long.class)
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.ant("/api/**"))
