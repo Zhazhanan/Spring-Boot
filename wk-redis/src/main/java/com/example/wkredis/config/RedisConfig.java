@@ -1,5 +1,6 @@
 package com.example.wkredis.config;
 
+import com.example.wkredis.module.SubscribeListener;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.data.redis.listener.PatternTopic;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -66,6 +69,23 @@ public class RedisConfig extends CachingConfigurerSupport {
         redisTemplate.afterPropertiesSet();
 
         return redisTemplate;
+    }
+
+    /**
+     * @describe: 监听主题
+     * @author: WangKun
+     * @date: 2019-03-01 04:55
+     **/
+    @Bean
+    public RedisMessageListenerContainer redisMessageListenerContainer(RedisConnectionFactory factory) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(factory);
+        /**
+         * 添加订阅者监听类，数量不限.PatternTopic定义监听主题,这里监听dj主题
+         */
+        container.addMessageListener(new SubscribeListener(), new PatternTopic("dj"));
+        return container;
+
     }
 
 }
