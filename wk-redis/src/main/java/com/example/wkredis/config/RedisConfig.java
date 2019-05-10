@@ -20,6 +20,8 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * @author WangKun
@@ -29,6 +31,8 @@ import java.lang.reflect.Method;
 @Configuration
 @EnableCaching
 public class RedisConfig extends CachingConfigurerSupport {
+
+    private final static String REDIS_KEY_PARAM_DELIMITER = "-";
 
 //    @Bean(name = "lockScript")
 //    public RedisScript<Long> lockScript() {
@@ -48,14 +52,7 @@ public class RedisConfig extends CachingConfigurerSupport {
             StringBuilder sb = new StringBuilder();
             sb.append(target.getClass().getName());
             sb.append(method.getName());
-
-            if (params.length > 0) {
-                sb.append("[");
-                for (Object obj : params) {
-                    sb.append(obj.toString());
-                }
-                sb.append("]");
-            }
+            sb.append(Arrays.stream(params).map(param -> String.valueOf(param)).collect(Collectors.joining(REDIS_KEY_PARAM_DELIMITER)));
             return sb.toString();
         };
     }
