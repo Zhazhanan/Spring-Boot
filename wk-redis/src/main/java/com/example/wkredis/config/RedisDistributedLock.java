@@ -12,7 +12,7 @@ import java.util.Collections;
  * @create 2019-02-26
  * @desc redis(单节点)分布式锁
  **/
-@Component
+//@Component
 public class RedisDistributedLock {
 
     private static final Long SUCCESS = 1L;
