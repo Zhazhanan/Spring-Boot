@@ -6,7 +6,11 @@
 	<groupId>com.example</groupId>
 	<artifactId>SpringBoot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<!--<packaging>jar</packaging>-->
+    <modules>
+		<!--<module>zookeeper</module>-->
+		<module>distributed-locks</module>
+	</modules>
+    <!--<packaging>jar</packaging>-->
 	<packaging>pom</packaging>
 
 
