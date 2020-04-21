@@ -6,6 +6,10 @@
 * 效率方面：Redis是NoSQL数据库，在效率上相对来说Redis就要比Zookeeper好很多；
 * 可靠性：Redis有效期不是很好控制，可能会产生有效期延迟，而Zookeeper的临时节点有先天性可控的有效期，所以相对来说Zookeeper比Redis可靠性高；
 
+## 分布式锁优缺点
+![avatar](./imgs/sort_.png) 
+
+
 ## zookeeper
     ZooKeeper是一个分布式的，开放源码的分布式应用程序协调服务，是Google的Chubby一个开源的实现，是Hadoop和Hbase的重要组件。它是一个为分布式应用提供一致性服务的软件，提供的功能包括：配置维护、域名服务、分布式同步、组服务等。  
     ZooKeeper的目标就是封装好复杂易出错的关键服务，将简单易用的接口和性能高效、功能稳定的系统提供给用户。  

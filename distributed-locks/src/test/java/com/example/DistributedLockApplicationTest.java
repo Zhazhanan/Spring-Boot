@@ -1,12 +1,13 @@
 package com.example;
 
-import static org.junit.Assert.assertTrue;
-
 import com.example.distributedlock.MicroService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.curator.utils.CloseableUtils;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 import org.junit.Test;
@@ -16,16 +17,26 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * Unit test for simple App.
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
+@Slf4j
 public class DistributedLockApplicationTest {
 
     @Autowired
     private MicroService microService;
+    @Autowired
+    CuratorFramework cruatorFramework;
+
+
+    private static final int QTY = 5;
+    private static final int REPETITIONS = QTY * 10;
+
+    private static final String PATH = "/examples/locks";
 
     public CuratorFramework init() {
         RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 3);
@@ -113,15 +124,79 @@ public class DistributedLockApplicationTest {
         try {
             Stat stat = client.checkExists() // 检查是否存在
                     .forPath("/nodeA");
-            System.out.println("============"+stat.toString());
+            System.out.println("============" + stat.toString());
             List<String> strings = client.getChildren().forPath("/nodeA");// 获取子节点的路径
-            System.out.println("============"+strings);
+            System.out.println("============" + strings);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**分布式锁测试*/
     @Test
     public void lock() {
+        final CountDownLatch latch = new CountDownLatch(QTY);
+        ExecutorService executor = Executors.newFixedThreadPool(QTY);
+        //        ExecutorService service = Executors.newFixedThreadPool(QTY);
+        ExecutorService service = Executors.newCachedThreadPool();
+
+        for (int i = 0; i < QTY; i++) {
+
+            service.submit(new Thread(() -> {
+                InterProcessMutex mutex = new InterProcessMutex(cruatorFramework, PATH);
+                for (int j = 0; j < REPETITIONS; j++) {
+                    microService.getLockByCurator(mutex);
+                }
+                latch.countDown();
+            }));
+        }
+
+        try {
+            latch.await();
+            service.awaitTermination(10, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            e.printStackTrace();
+        }
+
     }
+
+
+    /**分布式锁测试*/
+    @Test
+    public void test() {
+//        ExecutorService service = Executors.newFixedThreadPool(QTY);
+        ExecutorService service = Executors.newCachedThreadPool();
+        try {
+            for (int i = 0; i < QTY; ++i) {
+                final int index = i;
+                Callable<Void> task = new Callable<Void>() {
+                    @Override
+                    public Void call() throws Exception {
+                        try {
+
+                            ExampleClientThatLocks example = new ExampleClientThatLocks(cruatorFramework, PATH, new FakeLimitedResource(), "Client " + index);
+                            for (int j = 0; j < REPETITIONS; ++j) {
+                                example.doWork(10, TimeUnit.SECONDS);
+                            }
+                        } catch (InterruptedException e) {
+                            Thread.currentThread().interrupt();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            // log or do something
+                        }
+                        return null;
+                    }
+                };
+                service.submit(task);
+            }
+
+            service.awaitTermination(10, TimeUnit.MINUTES);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            CloseableUtils.closeQuietly(cruatorFramework);
+        }
+    }
+
 }

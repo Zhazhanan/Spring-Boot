@@ -1,8 +1,7 @@
 package com.example.distributedlock;
 
-import com.example.utils.DistributedLockByCurator;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.recipes.locks.InterProcessMutex;
+import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,49 +11,27 @@ import java.util.concurrent.TimeUnit;
 public class MicroService {
 
     @Autowired
-    DistributedLockByCurator distributedLockByZookeeper;
-
-    @Autowired
     CuratorFramework cruatorFramework;
 
-    /*通过zk获取分布式锁*/
-    public Boolean getLockByZK(String path) {
-        Boolean flag;
-        distributedLockByZookeeper.acquireDistributedLock(path);
+    /**
+     * 通过curator获取分布式锁
+     */
+    public void getLockByCurator(InterProcessLock lock) {
         try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            flag = distributedLockByZookeeper.releaseDistributedLock(path);
-        }
-        return flag;
-    }
-
-    /*通过curator获取分布式锁*/
-    public Boolean getLockByCurator(String path) {
-        Boolean flag;
-        distributedLockByZookeeper.acquireDistributedLock(path);
-        try {
-            Thread.sleep(15000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            flag = distributedLockByZookeeper.releaseDistributedLock(path);
-        }
-        return flag;
-    }
-
-    /*通过curator获取分布式锁*/
-    public Boolean getLockByCurator2(String lockPath) {
-        Boolean flag = false;
-        InterProcessMutex mutex = new InterProcessMutex(cruatorFramework, lockPath);
-        try {
-            flag = mutex.acquire(0, TimeUnit.SECONDS);
+            if (lock.acquire(10, TimeUnit.SECONDS)) {
+                System.out.println(Thread.currentThread().getName() + " has the lock");
+                Thread.sleep(500);
+            }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            try {
+                lock.release();
+                System.out.println(Thread.currentThread().getName() + " releasing the lock");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        return flag;
     }
 
 }
