@@ -23,13 +23,13 @@ public class MQConfig {
     @Value("${apache.rocketmq.consumer.PushConsumer}")
     private String consumerGroup;
 
-    public static final String TOPIC = "CREDIT_ADUIT_SYSTEM";
-    public static final String TAG = "INTO_INFO";
+    public static final String TOPIC = "TOPIC_JHXT_CREDIT_WWW";
+    public static final String TAG = "TAG_RECONSIDER_INFO";
 
 
     @Bean(initMethod = "start", destroyMethod = "shutdown")
     public MQProducer rocketMQProducer() {
-        return new MQProducer(consumerGroup, namesrvAddr);
+        return new MQProducer(producerGroup, namesrvAddr);
     }
 
     @Bean(initMethod = "start", destroyMethod = "shutdown")
@@ -39,10 +39,10 @@ public class MQConfig {
         subscription.setTag(TAG);
         subscription.setTopic(TOPIC);
 //        Subscription subscription2 = new Subscription();
-//        subscription2.setTag("pull");
-//        subscription2.setTopic("TopicPull");
+//        subscription2.setTopic("TOPIC_KK");
+//        subscription2.setTag("TAG_KK");
         map.put(subscription, new MQPushListener());
-//        map.put(subscription2, new MQPullListener());
+//        map.put(subscription2, new MQPushListener());
         return new MQConsumer(consumerGroup, namesrvAddr, map);
 //        return new MQPullConsumer(consumerGroup, namesrvAddr);
     }

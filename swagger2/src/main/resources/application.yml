@@ -1,5 +1,0 @@
-server:
-  port: 8888
-swagger:
-  enable: true
-  basePackage: com.example

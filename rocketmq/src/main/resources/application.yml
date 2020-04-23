@@ -5,7 +5,7 @@ server:
 apache:
   rocketmq:
     consumer:
-      PushConsumer: PushConsumer
+      PushConsumer: C_LNCT_kkk
     producer:
-      producerGroup: Producer
-    namesrvAddr: 172.18.100.139:9876;172.18.100.169:9876
+      producerGroup: CGID_LOANCREDIT_ANTIFRAUD_JC5WK
+    namesrvAddr: 10.50.180.161:9876;10.50.180.183:9876

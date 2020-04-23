@@ -14,11 +14,6 @@ import java.util.Map;
  **/
 public class ShiroConfig {
     @Bean
-    public ShiroRealm shiroRealm() {
-        return new ShiroRealm();
-    }
-
-    @Bean
     public DefaultWebSecurityManager securityManager(ShiroRealm shiroRealm) {
         DefaultWebSecurityManager defaultWebSecurityManager = new DefaultWebSecurityManager();
         defaultWebSecurityManager.setRealm(shiroRealm);
