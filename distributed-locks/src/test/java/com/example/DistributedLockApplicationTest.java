@@ -1,6 +1,7 @@
 package com.example;
 
 import com.example.distributedlock.MicroService;
+import com.example.utils.RedisDistributedLock;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
@@ -31,6 +32,9 @@ public class DistributedLockApplicationTest {
     private MicroService microService;
     @Autowired
     CuratorFramework cruatorFramework;
+
+    @Autowired
+    RedisDistributedLock redisDistributedLock;
 
 
     private static final int QTY = 5;
@@ -198,5 +202,17 @@ public class DistributedLockApplicationTest {
             CloseableUtils.closeQuietly(cruatorFramework);
         }
     }
+
+    /**
+     * @describe: 测试获取分布式锁
+     * @author: WangKun
+     * @date: 2019-02-26 02:56
+     **/
+    @Test
+    public void contextLoads() {
+        Object lock = redisDistributedLock.lock("key1", "val3", 100);
+        System.out.println(lock);
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package com.example.wkredis.config;
+package com.example.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -12,7 +12,7 @@ import java.util.Collections;
  * @create 2019-02-26
  * @desc redis(单节点)分布式锁
  **/
-//@Component
+@Component
 public class RedisDistributedLock {
 
     private static final Long SUCCESS = 1L;
@@ -31,11 +31,8 @@ public class RedisDistributedLock {
      * @date: 2019-02-26 02:42
      **/
     public boolean lock(String lockKey, String value, int expireTime) {
-        boolean ret = false;
         Object result = redisTemplate.execute(lockScript, Collections.singletonList(lockKey), value, expireTime);
-        if (SUCCESS.equals(result))
-            ret = true;
-        return ret;
+        return SUCCESS.equals(result);
     }
 
     /**
@@ -45,10 +42,7 @@ public class RedisDistributedLock {
      * @date: 2019-02-26 02:44
      **/
     public Object releaseLock(String key, String value) {
-        boolean ret = false;
         Object result = redisTemplate.execute(releaseLockScript, Collections.singletonList(key), value);
-        if (SUCCESS.equals(result))
-            ret = true;
-        return ret;
+        return SUCCESS.equals(result);
     }
 }
