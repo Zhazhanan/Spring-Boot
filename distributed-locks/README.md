@@ -38,3 +38,6 @@ Curator提供了四种分布式锁，分别是：
 * InterProcessSemaphoreMutex：分布式排它锁
 * InterProcessReadWriteLock：分布式读写锁
 * InterProcessMultiLock：将多个锁作为单个实体管理的容器
+
+## Mysql锁
+![avatar](./imgs/mysqllock.png)
